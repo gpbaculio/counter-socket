@@ -17,6 +17,15 @@ const io = new Server(server, {
 });
 
 const prisma = new PrismaClient();
+(async () => {
+  // Create or update the counter when the server starts
+  const data = await prisma.counter.upsert({
+    where: { id: 1 },
+    update: {},
+    create: { count: 0 },
+  });
+  console.log("data ", data);
+})();
 
 io.on("connection", async (socket) => {
   const counter = await prisma.counter.findFirst();
